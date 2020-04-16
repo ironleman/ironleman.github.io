@@ -24,7 +24,7 @@ class Play extends Phaser.Scene {
         this.load.image('bird5', './assets/birds5.png');
         this.load.image('finishline', './assets/finishedline.png');
         this.load.image('background', './assets/skymoving.png');
-        this.load.image('gameover', '/assets/gameoverscreen.png');
+        this.load.image('gameover', './assets/gameoverscreen.png');
         this.load.image('glider2', './assets/glider2.png');
     }
 
