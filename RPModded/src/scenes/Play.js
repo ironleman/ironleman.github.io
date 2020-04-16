@@ -14,7 +14,7 @@ class Play extends Phaser.Scene {
         // load spritesheet
         //this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         //this.load.spritesheet('sperm', './assets/spermspritesheet.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame:1});
-        this.load.image('glider', './assets/glider.png');
+        //this.load.image('glider', './assets/glider.png');
         this.load.image('bird0', './assets/birds0.png');
         this.load.image('bird1', './assets/birds1.png');
         this.load.image('bird2', './assets/birds2.png');
