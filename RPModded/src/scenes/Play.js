@@ -1,5 +1,8 @@
 let highscore = 0;
 let score = 0;
+let time = 60;
+let text;
+let timedEvent;
 
 class Play extends Phaser.Scene {
     constructor(){
@@ -7,14 +10,7 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        // load images/tile sprite
-        //this.load.image('rocket', './assets/rocket.png');
-        ////this.load.image('spaceship', './assets/spaceship.png');
-        //this.load.image('starfield', './assets/starfield.png');
-        // load spritesheet
-        //this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
-        //this.load.spritesheet('sperm', './assets/spermspritesheet.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame:1});
-        //this.load.image('glider', './assets/glider.png');
+        // load spritesheets / images
         this.load.image('bird0', './assets/birds0.png');
         this.load.image('bird1', './assets/birds1.png');
         this.load.image('bird2', './assets/birds2.png');
@@ -26,6 +22,7 @@ class Play extends Phaser.Scene {
         this.load.image('background', './assets/skymoving.png');
         this.load.image('gameover', './assets/gameoverscreen.png');
         this.load.image('glider2', './assets/glider2.png');
+        this.load.spritesheet('fireworks', './assets/fireworks.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 2});
     }
 
     create() {
@@ -47,9 +44,13 @@ class Play extends Phaser.Scene {
         let highScoreText = {
             fontFamily: 'Franklin Gothic Medium',
             color: '#000000',
-            backgroundColor: '#FFFFFF'
+            backgroundColor: '#FFFFFF',
+            padding: {
+                top: 4,
+                bottom: 7.5,
+            }
         }
-        this.highscoretext = this.add.text(400, 42,'High Score:', highScoreText);
+        this.highscoretext = this.add.text(400, 7,'High Score:', highScoreText);
 
         //add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2, 431, 'glider2').setOrigin(0, 0);
@@ -61,6 +62,15 @@ class Play extends Phaser.Scene {
         this.ship04 = new Lady(this, -200, 196, 'bird3', 0, 20).setOrigin(0, 0);
         this.ship05 = new Spaceship(this, game.config.width + 650, 260, 'bird6', 0, 10).setOrigin(0, 0);
         this.ship06 = new Spaceship(this, game.config.width + 500, 132, 'bird5', 0, 30).setOrigin(0, 0);
+
+        // animation config
+        this.anims.create({
+            key: 'fireworks',
+            frames: this.anims.generateFrameNumbers('fireworks', { start: 0, end: 2, first: 0}),
+            frameRate: 5
+        })
+
+
 
         // define keyboard keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -79,43 +89,56 @@ class Play extends Phaser.Scene {
         //highscore display
         let highscoreConfig = {
             fontFamily: 'Franklin Gothic Medium',
-            fontSize: '28px',
+            fontSize: '25px',
             backgroundColor: '#FFFFFF',
             color: '#000000',
             align: 'right',
             padding: {
-                top: 5,
-                bottom: 5,
+                top: 2,
+                bottom: 1,
             },
             fixedWidth: 100
         }
-        this.scoreRight = this.add.text(480, 42, this.highScore, highscoreConfig);
+        this.scoreRight = this.add.text(480, 7, this.highScore, highscoreConfig);
 
         
         // game over flag
         this.gameOver = false;
         this.scoreRight.alpha = 1;
+
+ 
+        // showing the time left
+
+        let clockConfig = {
+            color: '#000000',
+            fontFamily: 'Franklin Gothic Medium',
+            backgroundColor: '#FFFFFF'
+        }
+
+        this.initialTime = 60;
+        this.text = this.add.text(250, 15, 'Time: ' + this.formatTime(this.initialTime), clockConfig);
+        this.timedEvent = this.time.addEvent({delay: 1000, callback: this.onEvent, callbackScope: this, loop: true});
+
+ 
+
     }
 
-    update() {       
-        /*let shot = this.add.sprite(this.p1Rocket.x, this.p1Rocket.y, 'sperm').setOrigin(0, 0);
-        shot.anims.play('sperm');
-        shot.on('animationcomplete', () => {
-            shot.destroy();
-        });*/
+    update() {        
+   
+        // score config
         let scoreConfig = {
             fontFamily: 'Franklin Gothic Medium',
-            fontSize: '28px',
+            fontSize: '25px',
             backgroundColor: '#FFFFFF',
             color: '#000000',
             align: 'right',
             padding: {
-                top: 5,
-                bottom: 5,
+                top: 2,
+                bottom: 1,
             },
             fixedWidth: 100
         }
-            this.scoreLeft = this.add.text(69, 42, this.score, scoreConfig);
+            this.scoreLeft = this.add.text(69, 7, this.score, scoreConfig);
     
         if (this.score > highscore) {
             highscore = this.p1Score;
@@ -143,6 +166,15 @@ class Play extends Phaser.Scene {
             this.ship06.update();
         }
 
+        // spaceship speed increases after 30 seconds
+        if (this.initialTime <= 30) {
+            game.settings = {
+                spaceshipSpeed: 5
+            }
+        }
+        if(this.initialTime <= 0) {
+            this.gameOver = true;
+        }
         //check collisions
         if (this.checkCollision(this.p1Rocket, this.ship03)) {
             this.gameOver = true;
@@ -162,10 +194,14 @@ class Play extends Phaser.Scene {
         if (this.checkCollision(this.p1Rocket, this.ship06)){
             this.gameOver = true;
         }
+
+        // give points when you reach the top, and give more time 
         if (this.p1Rocket.y <= 108) {
+            this.scoreFireworks(this.p1Rocket);
             this.sound.play('point');
             this.p1Rocket.reset();
             score += 10;
+            this.initialTime += 2;
         }
               
         this.scoreLeft.text = score;
@@ -176,6 +212,7 @@ class Play extends Phaser.Scene {
         }
 
         if(this.gameOver == true) {
+            this.text.alpha = 0;
             this.scoreLeft.alpha = 0;
             this.scoreRight.alpha = 0;
             this.endgame.alpha = 1;
@@ -201,21 +238,30 @@ class Play extends Phaser.Scene {
             }
     }
 
-    /*shipExplode(ship) {
-        ship.alpha = 0;
-        // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');
-        boom.on('animationcomplete', () => {
-            ship.reset();
-            ship.alpha = 1;
-            boom.destroy();
+    scoreFireworks(p1Rocket) {
+        let firework = this.add.sprite(p1Rocket.x, 108, 'fireworks');
+        firework.anims.play('fireworks');
+        firework.on('animationcomplete', () => {
+            firework.destroy();
         });
-        // score add
-        
-        // check to see if the current score is higher than the high score
+    }
 
-
-        this.sound.play('sfx_explosion');
-    }*/
+        // put the timer in 0:00 fashion
+    formatTime(seconds){
+        // Minutes
+        var minutes = Math.floor(seconds/60);
+        // Seconds
+        var partInSeconds = seconds%60;
+        // Adds left zeros to seconds
+        partInSeconds = partInSeconds.toString().padStart(2,'0');
+        // Returns formated time
+        return `${minutes}:${partInSeconds}`;
+    }
+    
+    
+    onEvent ()
+    {
+        this.initialTime -= 1; // One second
+        this.text.setText('Time: ' + this.formatTime(this.initialTime));
+    }
 }
