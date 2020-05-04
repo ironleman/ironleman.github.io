@@ -1,6 +1,6 @@
-// Nathan Altice
-// Updated: 4/18/20
-// Phaser 3 Movement Studies in X Scenes
+// Simon Lemay
+// Updated: 5/4/2020
+// Phaser 3 Endless Runner
 // Concepts: Arcade physics, atlas and atlasXML loading, atlas animation (custom and generated frames), physics world wrapping, physics body properties (velocity, acceleration, drag, max acceleration), keyboard (isDown, JustPressed, DownDuration, UpDuration)
 // Jump mechanics inspired by and adapted from Game Mechanic Explorer https://gamemechanicexplorer.com
 // The two example atlases  are commercial assets and should not be used for your own projects - buy them from https://www.kenney.nl/assets :)
