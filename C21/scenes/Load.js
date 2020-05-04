@@ -8,7 +8,7 @@ class Load extends Phaser.Scene {
         this.load.path = "assets/";
         // take care of all of our asset loading now
         this.load.atlas('platformer_atlas', 'kenny_sheet.png', 'kenny_sheet.json');
-        this.load.audio("music", "song.WAV");
+        this.load.audio('music', 'song.wav');
         this.load.audio('jump', 'neeoww.mp3');
         this.load.audio('ow', 'ow.mp3');
         this.load.audio('menu', 'menuselect.wav');
