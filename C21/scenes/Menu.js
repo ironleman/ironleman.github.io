@@ -137,10 +137,13 @@ class Menu extends Phaser.Scene {
 
         this.bgm.play(musicConfig);
 
- 
+        this.menuSound = this.sound.add('menu', {
+            mute: false,
+            volume: 0.5
+        });
 
         let cursors= this.input.keyboard.createCursorKeys();
-        this.space= this.input.keyboard.addKey("ENTER");
+        this.space = this.input.keyboard.addKey("ENTER");
 
         
         this.up = this.input.keyboard.addKey("UP");
@@ -150,39 +153,45 @@ class Menu extends Phaser.Scene {
     update(){        
         if(this.menuSelect == 0){
             this.space.on('down', () => {
-            this.sound.play('menu');
             this.scene.start("playScene");
+            this.menuSound.play();
          });
         } else if (this.menuSelect == 1) {
             this.space.on('down', () => {
-            this.sound.play('menu');
             this.scene.start("characterScene");
-        });
-    }
+            this.menuSound.play();
+            
+            });
+        }
+
         if (this.menuSelect == 0) {
             this.up.on('down', () => {
-                this.sound.play('menu');
-                this.buttonSmall.anims.stop('buttonBlink');
                 this.menuSelect = 1;
-            })
+                this.buttonSmall.anims.stop('buttonBlink');
+                this.menuSound.play();
+
+            });
             this.down.on('down', () => {
-                this.sound.play('menu');
-                this.buttonSmall.anims.stop('buttonBlink');
                 this.menuSelect = 1;
-            })
+                this.buttonSmall.anims.stop('buttonBlink');
+                this.menuSound.play();
+        
+            });
         }
 
         if (this.menuSelect == 1) {
             this.up.on('down', () => {
-                this.sound.play('menu');
-                this.buttonSmall.anims.stop('buttonBlinkL');
                 this.menuSelect = 0;
-            })
+                this.buttonSmall.anims.stop('buttonBlinkL');
+                this.menuSound.play();
+
+                });
             this.down.on('down', () => {
-                this.sound.play('menu');
-                this.buttonSmall.anims.stop('buttonBlinkL');
                 this.menuSelect = 0;
-            })
+                this.buttonSmall.anims.stop('buttonBlinkL');   
+                this.menuSound.play();
+
+            });
         }
 
         if (this.menuSelect == 0) {
