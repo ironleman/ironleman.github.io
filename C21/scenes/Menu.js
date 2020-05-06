@@ -123,7 +123,7 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height-50, "J(U)m(P) over obstacles!", {fontFamily: "Arial Black", fontSize: "33px", color: "#000000"}).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height-50, "J(U)m(P) over obstacles!", {fontFamily: "Arial Black", fontSize: "32px", color: "#FFFFFF"}).setOrigin(0.5);
 
-        this.bgm = this.sound.add("music");
+        this.bgm = this.sound.add('music');
 
         let musicConfig= {
             mute: false,
