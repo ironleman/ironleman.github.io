@@ -8,17 +8,28 @@ class Load extends Phaser.Scene {
         this.load.path = "assets/";
         // take care of all of our asset loading now
         this.load.atlas('platformer_atlas', 'kenny_sheet.png', 'kenny_sheet.json');
-        this.load.audio('music', 'song.wav');
+        this.load.audio("music", "song.WAV");
         this.load.audio('jump', 'neeoww.mp3');
         this.load.audio('ow', 'ow.mp3');
+        this.load.audio('pickup', 'pickup.wav');
         this.load.audio('menu', 'menuselect.wav');
-        this.load.image('arrowKey', 'arrowKey.png');
-        this.load.image('talltrees', 'talltrees.png');
         this.load.image('groundScroll', 'ground.png');
-        this.load.atlasXML('shooter_atlas', 'shooter_sheet.png', 'shooter_sheet.xml');
         this.load.image('cloud', 'cloud.png');
         this.load.image('hydrant', 'fhydrant.png');
         this.load.image('rock', 'rock.png');
+        this.load.image('bone', 'treats.png');
+        this.load.spritesheet('button', 'button1.png', {
+            frameWidth: 350,
+            frameHeight: 140,
+            startFrame: 0,
+            endFrame: 1
+        });
+        this.load.spritesheet('buttonL', 'buttonlarge.png', {
+            frameWidth: 490,
+            frameHeight: 140,
+            startFrame: 0,
+            endFrame: 1
+        });
         this.load.spritesheet('gameover', 'finalgover.png', {
             frameWidth: 840,
             frameHeight: 448,
@@ -49,5 +60,6 @@ class Load extends Phaser.Scene {
         // ...and pass to the next Scene
 
         this.scene.start("menuScene");
-    }
+
+    } 
 }
