@@ -12,7 +12,15 @@ class Menu extends Phaser.Scene {
     }
 
     create(){
+        this.menuSelect = 0;
 
+        if(localStorage.getItem("boneScores") != null){
+            boneScore = parseInt(localStorage.getItem("boneScores"));
+        }else{
+            localStorage.setItem("boneScores", resetBS.toString());
+            boneScore = 0;
+        }
+        
                 // variables and settings
                 this.ACCELERATION = 500;
                 this.JUMP_VELOCITY = -1000;
@@ -22,16 +30,6 @@ class Menu extends Phaser.Scene {
                 // set bg color
                 this.cameras.main.setBackgroundColor("#227B96");
         
-        
-               degree = 0;
-        
-                /* draw grid lines for jump height reference
-                let graphics = this.add.graphics();
-                graphics.lineStyle(2, 0xFFFFFF, 0.1);
-                for(let y = game.config.height-70; y >= 35; y -= 35) {
-                    graphics.lineBetween(0, y, game.config.width, y);
-                }
-                */
                 // add some physics clouds
                 this.cloud01 = this.physics.add.sprite(600, 100, 'cloud', 'cloud_1').setScale(0.5);
                 this.cloud01.body.setAllowGravity(false).setVelocityX(this.cloudSpeed);
@@ -101,12 +99,26 @@ class Menu extends Phaser.Scene {
                     frameRate: 2
                 });
 
+                this.anims.create({
+                    key: 'buttonBlink',
+                    frames: this.anims.generateFrameNumbers('button', {start: 0, end: 1, first: 0}),
+                    frameRate: 2
+                });
+                this.anims.create({
+                    key: 'buttonBlinkL',
+                    frames: this.anims.generateFrameNumbers('buttonL', {start: 0, end: 1, first: 0}),
+                    frameRate: 2
+                });
+
         this.cameras.main.setBackgroundColor("#227B96");
         this.add.text(game.config.width/2, game.config.height/4, "Runaway Luna!", {fontFamily: "Arial Black", fontSize: "53px", color: "#000000"}).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/4, "Runaway Luna!", {fontFamily: "Arial Black", fontSize: "52px", color: "#FFFFFF"}).setOrigin(0.5);
         
-        this.add.text(game.config.width/2, game.config.height/2, "Press UP to Continue", {fontFamily: "Arial Black", fontSize: "33px", color: "#000000"}).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, "Press UP to Continue", {fontFamily: "Arial Black", fontSize: "32px", color: "#FFFFFF"}).setOrigin(0.5);
+        this.buttonSmall = this.add.sprite(game.config.width/2 - 130, game.config.height/2 - 45, 'button').setOrigin(0).setScale(0.75);
+        this.add.text(game.config.width/2, game.config.height/2, "Start Game", {fontFamily: "Arial Black", fontSize: "33px", color: "#000000"}).setOrigin(0.5);
+        this.buttonLarge = this.add.sprite(game.config.width/2 - 180, game.config.height/2 + 65, 'buttonL').setOrigin(0).setScale(0.75);
+        this.add.text(game.config.width/2, game.config.height/2 + 115, "Character Select", {fontFamily: "Arial Black", fontSize: "33px", color: "#000000"}).setOrigin(0.5);
+        //this.add.text(game.config.width/2, game.config.height/2, "Press UP to Continue", {fontFamily: "Arial Black", fontSize: "32px", color: "#FFFFFF"}).setOrigin(0.5);
 
         this.add.text(game.config.width/2, game.config.height-50, "J(U)m(P) over obstacles!", {fontFamily: "Arial Black", fontSize: "33px", color: "#000000"}).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height-50, "J(U)m(P) over obstacles!", {fontFamily: "Arial Black", fontSize: "32px", color: "#FFFFFF"}).setOrigin(0.5);
@@ -128,21 +140,59 @@ class Menu extends Phaser.Scene {
  
 
         let cursors= this.input.keyboard.createCursorKeys();
-        let space= this.input.keyboard.addKey("UP");
-        space.on('down', () => {
-            //this.bgm.stop();
-            this.sound.play('menu');
-            this.scene.start("playScene");
-        });
-        
-        
+        this.space= this.input.keyboard.addKey("ENTER");
 
-      
+        
+        this.up = this.input.keyboard.addKey("UP");
+        this.down = this.input.keyboard.addKey("DOWN");
     }
 
-    update(){
+    update(){        
+        if(this.menuSelect == 0){
+            this.space.on('down', () => {
+            this.sound.play('menu');
+            this.scene.start("playScene");
+         });
+        } else if (this.menuSelect == 1) {
+            this.space.on('down', () => {
+            this.sound.play('menu');
+            this.scene.start("characterScene");
+        });
+    }
+        if (this.menuSelect == 0) {
+            this.up.on('down', () => {
+                this.sound.play('menu');
+                this.buttonSmall.anims.stop('buttonBlink');
+                this.menuSelect = 1;
+            })
+            this.down.on('down', () => {
+                this.sound.play('menu');
+                this.buttonSmall.anims.stop('buttonBlink');
+                this.menuSelect = 1;
+            })
+        }
 
-        
+        if (this.menuSelect == 1) {
+            this.up.on('down', () => {
+                this.sound.play('menu');
+                this.buttonSmall.anims.stop('buttonBlinkL');
+                this.menuSelect = 0;
+            })
+            this.down.on('down', () => {
+                this.sound.play('menu');
+                this.buttonSmall.anims.stop('buttonBlinkL');
+                this.menuSelect = 0;
+            })
+        }
+
+        if (this.menuSelect == 0) {
+            this.buttonSmall.anims.play('buttonBlink', true);
+        }
+        else {
+            this.buttonLarge.anims.play('buttonBlinkL', true);
+        }
+
+
         this.grass.anims.play('grassmove', true);
         this.grass1.anims.play('grassmove', true);
         this.grass2.anims.play('grassmove', true);
