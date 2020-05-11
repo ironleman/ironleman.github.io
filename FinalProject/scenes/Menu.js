@@ -11,6 +11,12 @@ class Menu extends Phaser.Scene {
 
     }
     create() {
+        this.add.image(0, 0, 'tutorialBG').setOrigin(0);
+
+        this.add.text(game.config.width/2, game.config.height/2, 'Pufferfish Puzzle!');
+        this.add.text(game.config.width/2, game.config.height/2 + 50, 'press enter to start');
+        this.menuSelect = 0;
+
         let cursors= this.input.keyboard.createCursorKeys();
         this.space = this.input.keyboard.addKey("ENTER");
 
@@ -26,15 +32,15 @@ class Menu extends Phaser.Scene {
         if(this.menuSelect == 0){ // menuSelect = 0 : play button
             this.space.on('down', () => {            
             //  this.menuSound.play();
-            if (tutorialComplete == false) { //if the tutorial is not complete
+            //if (tutorialComplete == false) { //if the tutorial is not complete
                 this.scene.start("tutorialScene"); // play the tutorial scene
-            } else { // else
-                this.scene.start("level1Scene"); // start level 1
-            }
+           // } else { // else
+               // this.scene.start("level1Scene"); // start level 1
+            // }
          });
         } else if (this.menuSelect == 1) {
             this.space.on('down', () => {
-            this.scene.start("levelSelect");
+            this.scene.start("levelSelectScene");
             // this.menuSound.play();
             
             });
@@ -47,7 +53,7 @@ class Menu extends Phaser.Scene {
         if (this.menuSelect == 0) {
             this.up.on('down', () => {
                 this.menuSelect = 1;
-                this.buttonSmall.anims.stop('playButtonBlink');
+                //this.buttonSmall.anims.stop('playButtonBlink');
                 // this.menuSound.play();
 
             });
@@ -62,13 +68,13 @@ class Menu extends Phaser.Scene {
         if (this.menuSelect == 1) {
             this.up.on('down', () => {
                 this.menuSelect = 0;
-                this.buttonSmall.anims.stop('levelSelButtonBlink');
+               // this.buttonSmall.anims.stop('levelSelButtonBlink');
                 // this.menuSound.play();
 
                 });
             this.down.on('down', () => {
                 this.menuSelect = 0;
-                this.buttonSmall.anims.stop('levelSelButtonBlink');   
+               // this.buttonSmall.anims.stop('levelSelButtonBlink');   
                 // this.menuSound.play();
 
             });
@@ -76,10 +82,10 @@ class Menu extends Phaser.Scene {
 
         // animations for blinking buttons to indicate where the player's selector is
         if (this.menuSelect == 0) {
-            this.buttonSmall.anims.play('playButtonBlink', true);
+            //this.buttonSmall.anims.play('playButtonBlink', true);
         }
         else {
-            this.buttonLarge.anims.play('levelSelButtonBlink', true);
+            //this.buttonLarge.anims.play('levelSelButtonBlink', true);
         }
 
 
