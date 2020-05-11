@@ -17,9 +17,10 @@ const tileSize = 35;
 
 // main game object
 let config = {
-    type: Phaser.WEBGL,
-    width: 840,
-    height: 525,
+
+    type: Phaser.AUTO,
+    width: 1300,
+    height: 735,
     physics: {
         default: 'arcade',
         arcade: {
@@ -30,12 +31,17 @@ let config = {
             }
         }
     },
-    scene: [ Load, Menu, Tutorial, LevelSelect, Level1, Level2, credits ]
+
+    scene: [Load, Menu]
 };
 
+//apply configurations to new Phaser Game
 let game = new Phaser.Game(config);
 
 let score;
+let centerX= game.config.width/2;
+let centerY= game.config.height/2;
+
 // let highScore;
 // let newHighScore = false;
 // let boneScore;
