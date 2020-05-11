@@ -11,84 +11,32 @@ class Menu extends Phaser.Scene {
 
     }
     create() {
-        this.add.image(0, 0, 'tutorialBG').setOrigin(0);
+        this.add.image(centerX, centerY, "corals");
+        this.puffer= this.add.sprite(405, 0, "pufferFish").setOrigin(0,0);
+        let playbutton= this.add.image(centerX, 445, "play").setInteractive();
+        let selectbutton= this.add.image(centerX, 535, "select").setInteractive();
+        this.add.text(100, 240, "Pufferfish Misadventures", {fontFamily: "Cursive", fontSize: "92px", color: "#FF7F50", stroke: "#1565c0", strokeThickness:20});
 
-        this.add.text(game.config.width/2, game.config.height/2, 'Pufferfish Puzzle!');
-        this.add.text(game.config.width/2, game.config.height/2 + 50, 'press enter to start');
-        this.menuSelect = 0;
-
-        let cursors= this.input.keyboard.createCursorKeys();
-        this.space = this.input.keyboard.addKey("ENTER");
+        playbutton.on('pointerover',function(pointer){
+            playbutton.setAlpha(0.3);
+        })
+        playbutton.on('pointerout',function(pointer){
+            playbutton.setAlpha(1);
+        })
+        
+        selectbutton.on('pointerover',function(pointer){
+            selectbutton.setAlpha(0.3);
+        })
+        selectbutton.on('pointerout',function(pointer){
+            selectbutton.setAlpha(1);
+        })
 
         
-        this.up = this.input.keyboard.addKey("UP");
-        this.down = this.input.keyboard.addKey("DOWN");
     }
 
     update(){
         
-        // Checks to see if the player is currently over the level select button or the play button,
-        // and upon hitting enter takes them to the correct scene
-        if(this.menuSelect == 0){ // menuSelect = 0 : play button
-            this.space.on('down', () => {            
-            //  this.menuSound.play();
-            //if (tutorialComplete == false) { //if the tutorial is not complete
-                this.scene.start("tutorialScene"); // play the tutorial scene
-           // } else { // else
-               // this.scene.start("level1Scene"); // start level 1
-            // }
-         });
-        } else if (this.menuSelect == 1) {
-            this.space.on('down', () => {
-            this.scene.start("levelSelectScene");
-            // this.menuSound.play();
-            
-            });
-        }
-
-        // Simple function to have the menu be "loopable", where the player can hit up or down when they 
-        // are at the play button and will loop them down to the level select button,
-        // and vice versa, if they are at the level select button, hitting up or down will take them
-        // to the play button
-        if (this.menuSelect == 0) {
-            this.up.on('down', () => {
-                this.menuSelect = 1;
-                //this.buttonSmall.anims.stop('playButtonBlink');
-                // this.menuSound.play();
-
-            });
-            this.down.on('down', () => {
-                this.menuSelect = 1;
-                this.buttonSmall.anims.stop('playButtonBlink');
-                // this.menuSound.play();
-        
-            });
-        }
-
-        if (this.menuSelect == 1) {
-            this.up.on('down', () => {
-                this.menuSelect = 0;
-               // this.buttonSmall.anims.stop('levelSelButtonBlink');
-                // this.menuSound.play();
-
-                });
-            this.down.on('down', () => {
-                this.menuSelect = 0;
-               // this.buttonSmall.anims.stop('levelSelButtonBlink');   
-                // this.menuSound.play();
-
-            });
-        }
-
-        // animations for blinking buttons to indicate where the player's selector is
-        if (this.menuSelect == 0) {
-            //this.buttonSmall.anims.play('playButtonBlink', true);
-        }
-        else {
-            //this.buttonLarge.anims.play('levelSelButtonBlink', true);
-        }
-
-
         
     }
 }
+
