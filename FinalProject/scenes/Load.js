@@ -6,6 +6,8 @@ class Load extends Phaser.Scene {
     preload() {
         // set load path
         this.load.path = "assets/";
+        this.load.image('pufferFish', 'pufferFish.png');
+        this.load.image('tutorialBG', 'tutorialArtTemp.png');
 
     }
     create() {
