@@ -10,20 +10,30 @@ class Tutorial extends Phaser.Scene {
     create() {
 
         // background
-        this.add.image(0, 0, 'tutorialBG');
+        this.add.image(0, 0, 'tutorialBG').setScale(4);
 
         // pufferfish speed and sprite setup
         this.pufferFishVelocity = 200;
 
-        this.pufferFish = this.physics.add.sprite(game.config.width/2, game.config.height/2, 'pufferFish').setScale(0.25);
+        this.pufferFish = this.physics.add.sprite(game.config.width/2, game.config.height/2, 'pufferFish').setScale(0.5);
 
-        this.key1 = this.add.sprite(20, 20, 'key1');
-        this.key2 = this.add.sprite(150, 20, 'key2');
-        this.key3 = this.add.sprite(280, 20, 'key3');
-        // camera setup
-        this.cameras.main.startFollow(this.pufferFish, true, 0.1, 0.1);
+        this.key1 = this.add.sprite(900, 80, 'key1').setScale(1);
+        this.key2 = this.add.sprite(1200, 80, 'key2').setScale(1);
+        this.key3 = this.add.sprite(1500, 80, 'key3').setScale(1);
+
+        // camera setup and world bounds setup
+        //https://phaser.io/examples/v3/view/camera/follow-offset
+        //set camera and world bounds to double the size of the background image
+        this.cameras.main.setBounds(0, 0, 1920*2, 1080*2);
+        this.physics.world.setBounds(0, 0, 1920*2, 1080*2);
+        //set up pufferfish colliision with world bounds 
+        this.pufferFish.setCollideWorldBounds(true);
+        //set zoom 
         this.cameras.main.setZoom(0.5);
-
+        //have camera follow pufferfish and offset it
+        this.cameras.main.startFollow(this.pufferFish, true, 0.1, 0.1);
+        this.cameras.main.followOffset.set(-300, 0);
+        
         // control configs
         cursors = this.input.keyboard.createCursorKeys();
         this.keyboard1 = this.input.keyboard.addKey("ONE");
@@ -51,6 +61,7 @@ class Tutorial extends Phaser.Scene {
             this.key1.clearTint();
             this.pufferFish.setSize(700,700);
          });
+         
         // controls
         if(cursors.up.isDown) {
             this.pufferFish.body.setVelocityY(-this.pufferFishVelocity);
