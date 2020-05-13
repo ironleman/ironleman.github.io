@@ -16,6 +16,8 @@ class Load extends Phaser.Scene {
         this.load.image('key1', 'key1UI.png');
         this.load.image('key2', 'key2UI.png');
         this.load.image('key3', 'key3UI.png');
+        this.load.atlas("bubbles", "bubblesheet.png", "bubbles.json");
+        this.load.audio("blip", "reverse_blip.mp3");
 
     }
     create() {
