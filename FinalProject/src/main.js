@@ -32,7 +32,7 @@ let config = {
         }
     },
 
-    scene: [ Load, Menu, Tutorial, LevelSelect, Level1, Level2, credits ]
+    scene: [ Load, Menu, tutorialLoad, Tutorial, LevelSelect, Level1, Level2, credits ]
 };
 
 //apply configurations to new Phaser Game
@@ -41,6 +41,8 @@ let game = new Phaser.Game(config);
 let score;
 let centerX= game.config.width/2;
 let centerY= game.config.height/2;
+var timeText;
+var timedEvent;
 
 // let highScore;
 // let newHighScore = false;
