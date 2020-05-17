@@ -216,7 +216,7 @@ class Tutorial extends Phaser.Scene {
             this.key4.clearTint();
             
             this.pufferFish.anims.play('one', true);
-            this.pufferFishVelocity = 300;
+            this.pufferFishVelocity = 400;
             this.pufferFish.setSize(this.pufferFish.width,this.pufferFish.height);
             this.poofSound.play(this.poofConfig);  
          });
